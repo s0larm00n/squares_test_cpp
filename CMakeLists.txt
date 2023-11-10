@@ -11,6 +11,7 @@ include_directories(
         "${PROJECT_SOURCE_DIR}/include/"
         "${PROJECT_SOURCE_DIR}/dependencies/glad/include/"
         "${PROJECT_SOURCE_DIR}/dependencies/glfw-3.3.8/include/"
+        "${PROJECT_SOURCE_DIR}/dependencies/glm-0.9.9.8/include/"
 )
 
 add_executable(squares_test_cpp ${all_SRCS} "${PROJECT_SOURCE_DIR}/dependencies/glad/src/glad.c")
