@@ -4,6 +4,7 @@
 #include "cpptest/Engine.h"
 #include "cpptest/shaders/ShaderProgram.h"
 #include "cpptest/models/BoxModel.h"
+#include "cpptest/squares/SquareController.h"
 
 namespace cpptest {
 

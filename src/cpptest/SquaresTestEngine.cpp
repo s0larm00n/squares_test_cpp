@@ -14,7 +14,9 @@ namespace cpptest {
 
     void SquaresTestEngine::redraw() {
         shaderProgram->use();
-        boxModel->draw();
+        //boxModel->draw();
+        SquareController squareController{shaderProgram, boxModel};
+        squareController.draw();
     }
 
     void SquaresTestEngine::onWindowResize(int width, int height) {

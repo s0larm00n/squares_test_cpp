@@ -51,4 +51,11 @@ namespace cpptest {
         glUseProgram(ID);
     }
 
+    void ShaderProgram::setColorAttribute(const Color &color) const {
+        int uniformLocation = glGetUniformLocation(ID, "inputColor");
+        glUniform4f(uniformLocation, color.red, color.green, color.blue, color.alpha);
+    }
+
+    void setAttribute(const std::string *name) {}
+
 }// namespace cpptest

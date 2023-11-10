@@ -32,7 +32,7 @@ namespace cpptest {
         void processInputActionsQueue();
 
     protected:
-        Color backgroundColor{0, 0, 0, 1};
+        Color backgroundColor{BLACK};
         std::string shadersFolderPath;
 
         Engine(std::string name, int width, int height, std::string shadersFolder);
