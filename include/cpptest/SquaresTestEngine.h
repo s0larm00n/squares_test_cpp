@@ -17,7 +17,7 @@ namespace cpptest {
         void init() override;
         void update() override;
         void redraw() override;
-        void onWindowResize(int width, int height) override;
+        void onFramebufferResize(int width, int height) override;
         void onPointerDown(double xPos, double yPos) override;
         void onPointerMove(double prevX, double prevY, double xPos, double yPos) override;
         void onPointerUp() override;

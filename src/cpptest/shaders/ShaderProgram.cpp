@@ -2,7 +2,11 @@
 
 namespace cpptest {
 
-    ShaderProgram::ShaderProgram(const std::string &shadersFolderPath) {
+    ShaderProgram::ShaderProgram(
+            const std::string &shadersFolderPath,
+            const FramebufferDimensionsProvider *dimensionsProvider
+    )
+        : viewportDimensionsProvider{dimensionsProvider} {
         int success;
         char infoLog[512];
 
@@ -52,10 +56,24 @@ namespace cpptest {
     }
 
     void ShaderProgram::setColorAttribute(const Color &color) const {
-        int uniformLocation = glGetUniformLocation(ID, "inputColor");
+        GLint uniformLocation = glGetUniformLocation(ID, "inputColor");
         glUniform4f(uniformLocation, color.red, color.green, color.blue, color.alpha);
     }
 
-    void setAttribute(const std::string *name) {}
+    void ShaderProgram::setTransformMatrix(const glm::mat4 &transform) const {
+        GLint uniformLocation = glGetUniformLocation(ID, "transform");
+        glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(transform));
+    }
+
+    void ShaderProgram::setPlain2DTransformMatrix(float x, float y, float width, float height) const {
+        float ndcX = (2.0f * x) / viewportDimensionsProvider->width() - 1.0f;
+        float ndcY = 1.0f - (2.0f * y) / viewportDimensionsProvider->height();
+        float ndcWidth = (2.0f * width) / viewportDimensionsProvider->width();
+        float ndcHeight = -(2.0f * height) / viewportDimensionsProvider->height();
+        glm::mat4 transform = glm::mat4(1.0f);
+        transform = glm::translate(transform, glm::vec3(ndcX, ndcY, 0.0f));
+        transform = glm::scale(transform, glm::vec3(ndcWidth, ndcHeight, 1.0f));
+        setTransformMatrix(transform);
+    }
 
 }// namespace cpptest

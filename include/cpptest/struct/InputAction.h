@@ -7,13 +7,14 @@ namespace cpptest {
         POINTER_UP,
         POINTER_DOWN,
         POINTER_MOVE,
-        WINDOW_RESIZE
+        WINDOW_RESIZE,
+        FRAMEBUFFER_RESIZE
     };
 
     struct InputAction {
         InputActionType type;
-        int x;
-        int y;
+        float x;
+        float y;
     };
 
 }// namespace cpptest

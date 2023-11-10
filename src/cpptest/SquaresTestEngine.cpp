@@ -6,7 +6,7 @@ namespace cpptest {
         : Engine{std::move(name), width, height, std::move(shadersFolder)} {}
 
     void SquaresTestEngine::init() {
-        shaderProgram = new ShaderProgram{shadersFolderPath};
+        shaderProgram = new ShaderProgram{shadersFolderPath, this};
         boxModel = new BoxModel{};
     }
 
@@ -14,21 +14,20 @@ namespace cpptest {
 
     void SquaresTestEngine::redraw() {
         shaderProgram->use();
-        //boxModel->draw();
         SquareController squareController{shaderProgram, boxModel};
         squareController.draw();
     }
 
-    void SquaresTestEngine::onWindowResize(int width, int height) {
-        std::cout << "resize";
+    void SquaresTestEngine::onFramebufferResize(int width, int height) {
+        std::cout << "resize: " << width << ", " << height << std::endl;
     }
 
     void SquaresTestEngine::onPointerDown(double xPos, double yPos) {
-        std::cout << "down";
+        std::cout << "down: " << xPos << ", " << yPos << std::endl;
     }
 
     void SquaresTestEngine::onPointerMove(double prevX, double prevY, double xPos, double yPos) {
-        std::cout << "move";
+        std::cout << "move: " << prevX << ", " << prevY << "; "<< xPos << ", " << yPos << std::endl;
     }
 
     void SquaresTestEngine::onPointerUp() {
