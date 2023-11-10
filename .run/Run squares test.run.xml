@@ -1,7 +1,12 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Run squares test" type="CMakeRunConfiguration" factoryName="Application" singleton="false" PROGRAM_PARAMS="$PROJECT_DIR$/shaders" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="squares_test_cpp" TARGET_NAME="squares_test_cpp" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="squares_test_cpp" RUN_TARGET_NAME="squares_test_cpp">
-    <method v="2">
-      <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-    </method>
-  </configuration>
+    <configuration default="false" name="Run squares test" type="CMakeRunConfiguration" factoryName="Application"
+                   inputActionsQueue="false" PROGRAM_PARAMS="$PROJECT_DIR$/shaders" REDIRECT_INPUT="false"
+                   ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true"
+                   PROJECT_NAME="squares_test_cpp" TARGET_NAME="squares_test_cpp" CONFIG_NAME="Debug"
+                   RUN_TARGET_PROJECT_NAME="squares_test_cpp" RUN_TARGET_NAME="squares_test_cpp">
+        <method v="2">
+            <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask"
+                    enabled="true"/>
+        </method>
+    </configuration>
 </component>
