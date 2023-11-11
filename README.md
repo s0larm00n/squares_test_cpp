@@ -1,6 +1,8 @@
 # Square dragging demo app
 
-This is a simple 2D graphics showcase project written in C++ with OpenGL 3.3 and GLFW 3. There is 1 target: macOS.
+This is a simple 2D graphics showcase project written in C++ with OpenGL 3.3 and GLFW 3. Tested on MacOS and Windows.
+
+To run this application, you need to pass path to /shaders folder in project directory as program argument. You can use existing run configurations in this project for CLion or Visual Studio, both named 'Run squares test'.
 
 After app launches, you will see an empty screen. Clicking at empty space at the app window at any time will cause a square creation. There is no square deletion functionality in this app. There is no limit of how many squares can be created.
 

@@ -1,0 +1,13 @@
+{
+    "version": "0.2.1",
+    "defaults": {},
+    "configurations": [
+        {
+            "type": "default",
+            "project": "CMakeLists.txt",
+            "projectTarget": "squares_test_cpp.exe",
+            "name": "Run squares test",
+            "args": [ "${ProjectDir}/shaders" ]
+        }
+    ]
+}

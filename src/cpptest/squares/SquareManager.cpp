@@ -69,8 +69,8 @@ namespace cpptest {
     }
     void SquareManager::refreshZIndexes() {
         // normalized Z-indexes based on squares amount
-        float step = 1.f / squares.size();
-        float nextIndex = 0;
+        float step = 1.f / (squares.size() + 1.f);
+        float nextIndex = - step;
         for (int i = 0; i < squares.size(); i++) {
             SquareController *square = squares[i];
             square->setZIndex(nextIndex);
