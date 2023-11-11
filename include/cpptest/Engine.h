@@ -6,7 +6,7 @@
 #include <iostream>
 #include "cpptest/struct/Color.h"
 #include "cpptest/struct/InputAction.h"
-#include "FramebufferDimensionsProvider.h"
+#include "DimensionsProvider.h"
 #include <queue>
 #include "cpptest/util/Coordinates.h"
 
@@ -18,7 +18,7 @@
 
 namespace cpptest {
 
-    class Engine: public FramebufferDimensionsProvider {
+    class Engine : public DimensionsProvider {
     private:
         double lastPointerPosX = 0;
         double lastPointerPosY = 0;
@@ -28,10 +28,8 @@ namespace cpptest {
 
         std::string windowName;
 
-        int windowWidth;
-        int windowHeight;
-        int frameBufferWidth;
-        int frameBufferHeight;
+        int initialWindowWidth;
+        int initialWindowHeight;
 
         GLFWwindow *window = nullptr;
         static void framebufferSizeCallback(GLFWwindow *window, int width, int height);
@@ -45,20 +43,20 @@ namespace cpptest {
         Color backgroundColor{BLACK};
         std::string shadersFolderPath;
 
-        Engine(std::string name, int width, int height, std::string shadersFolder);
+        Engine(std::string name, float width, float height, std::string shadersFolder);
         virtual void init() = 0;
         virtual void update() = 0;
         virtual void redraw() = 0;
-        virtual void onFramebufferResize(int width, int height) = 0;
-        virtual void onPointerDown(double xPos, double yPos) = 0;
-        virtual void onPointerMove(double prevX, double prevY, double xPos, double yPos) = 0;
+        virtual void onFramebufferResize(float width, float height) = 0;
+        virtual void onPointerDown(float xPos, float yPos) = 0;
+        virtual void onPointerMove(float prevX, float prevY, float xPos, float yPos) = 0;
         virtual void onPointerUp() = 0;
         virtual ~Engine() = default;
 
     public:
         void run();
-        [[nodiscard]] float width() const override;
-        [[nodiscard]] float height() const override;
+        [[nodiscard]] glm::vec2 getWindowDimensions() const override;
+        [[nodiscard]] glm::vec2 getFramebufferDimensions() const override;
     };
 
 }// namespace cpptest

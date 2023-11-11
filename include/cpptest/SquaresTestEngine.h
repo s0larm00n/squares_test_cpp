@@ -5,25 +5,26 @@
 #include "cpptest/shaders/ShaderProgram.h"
 #include "cpptest/models/BoxModel.h"
 #include "cpptest/squares/SquareController.h"
+#include "cpptest/squares/SquareManager.h"
 
 namespace cpptest {
 
     class SquaresTestEngine : public Engine {
     private:
+        SquareManager *squareManager = nullptr;
         cpptest::ShaderProgram *shaderProgram = nullptr;
-        cpptest::BoxModel *boxModel = nullptr;
 
     protected:
         void init() override;
         void update() override;
         void redraw() override;
-        void onFramebufferResize(int width, int height) override;
-        void onPointerDown(double xPos, double yPos) override;
-        void onPointerMove(double prevX, double prevY, double xPos, double yPos) override;
+        void onFramebufferResize(float width, float height) override;
+        void onPointerDown(float xPos, float yPos) override;
+        void onPointerMove(float prevX, float prevY, float xPos, float yPos) override;
         void onPointerUp() override;
 
     public:
-        SquaresTestEngine(std::string name, int width, int height, std::string shadersFolder);
+        SquaresTestEngine(std::string name, float width, float height, std::string shadersFolder);
         ~SquaresTestEngine() override;
     };
 

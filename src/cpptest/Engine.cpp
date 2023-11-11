@@ -5,8 +5,8 @@ namespace cpptest {
     std::queue<InputAction> *Engine::inputActionsQueue = new std::queue<InputAction>{};
     Engine *Engine::engineSingleton = nullptr;
 
-    Engine::Engine(std::string name, int width, int height, std::string shadersFolder)
-        : windowName{std::move(name)}, windowWidth{width}, windowHeight{height},
+    Engine::Engine(std::string name, float width, float height, std::string shadersFolder)
+        : windowName{std::move(name)}, initialWindowWidth{(int) width}, initialWindowHeight{(int) height},
           shadersFolderPath{std::move(shadersFolder)} {
         engineSingleton = this;
     }
@@ -20,7 +20,7 @@ namespace cpptest {
             glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
         }
 
-        window = glfwCreateWindow(windowWidth, windowHeight, windowName.c_str(), nullptr, nullptr);
+        window = glfwCreateWindow(initialWindowWidth, initialWindowHeight, windowName.c_str(), nullptr, nullptr);
         if (window == nullptr) {
             std::cout << "Failed to create GLFW window" << std::endl;
             glfwTerminate();
@@ -33,6 +33,8 @@ namespace cpptest {
             exit(-1);
         }
 
+        int frameBufferWidth;
+        int frameBufferHeight;
         glfwGetFramebufferSize(window, &frameBufferWidth, &frameBufferHeight);
         glViewport(0, 0, frameBufferWidth, frameBufferHeight);
 
@@ -40,6 +42,8 @@ namespace cpptest {
         glfwSetKeyCallback(window, keyCallback);
         glfwSetMouseButtonCallback(window, mouseButtonCallback);
         glfwSetCursorPosCallback(window, cursorPosCallback);
+
+        glEnable(GL_DEPTH_TEST);
 
         init();
 
@@ -54,7 +58,7 @@ namespace cpptest {
         processInputActionsQueue();
         update();
         glClearColor(backgroundColor.red, backgroundColor.green, backgroundColor.blue, backgroundColor.alpha);
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         redraw();
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -64,15 +68,11 @@ namespace cpptest {
         std::queue<InputAction> snapshotQueue{*inputActionsQueue};
         while (!snapshotQueue.empty()) {
             InputAction action = snapshotQueue.front();
+            glm::vec2 windowSize = getWindowDimensions();
+            glm::vec2 framebufferSize = getFramebufferDimensions();
+
             switch (action.type) {
-                case WINDOW_RESIZE: {
-                    windowWidth = action.x;
-                    windowHeight = action.y;
-                    break;
-                }
                 case FRAMEBUFFER_RESIZE: {
-                    frameBufferWidth = action.x;
-                    frameBufferHeight = action.y;
                     onFramebufferResize(action.x, action.y);
                     break;
                 }
@@ -82,17 +82,17 @@ namespace cpptest {
                 }
                 case POINTER_DOWN: {
                     onPointerDown(
-                            convert(action.x, windowWidth, frameBufferWidth),
-                            convert(action.y, windowHeight, frameBufferHeight)
+                            convert(action.x, windowSize.x, framebufferSize.x),
+                            convert(action.y, windowSize.y, framebufferSize.y)
                     );
                     break;
                 }
                 case POINTER_MOVE: {
                     onPointerMove(
-                            convert(lastPointerPosX, windowWidth, frameBufferWidth),
-                            convert(lastPointerPosY, windowHeight, frameBufferHeight),
-                            convert(action.x, windowWidth, frameBufferWidth),
-                            convert(action.y, windowHeight, frameBufferHeight)
+                            convert(lastPointerPosX, windowSize.x, framebufferSize.x),
+                            convert(lastPointerPosY, windowSize.y, framebufferSize.y),
+                            convert(action.x, windowSize.x, framebufferSize.x),
+                            convert(action.y, windowSize.y, framebufferSize.y)
                     );
                     lastPointerPosX = action.x;
                     lastPointerPosY = action.y;
@@ -105,11 +105,8 @@ namespace cpptest {
     }
 
     void Engine::framebufferSizeCallback(GLFWwindow *window, int width, int height) {
-        int frameBufferWidth, frameBufferHeight;
-        glfwGetFramebufferSize(window, &frameBufferWidth, &frameBufferHeight);
-        glViewport(0, 0, frameBufferWidth, frameBufferHeight);
-        inputActionsQueue->push(InputAction{WINDOW_RESIZE, (float) width, (float) height});
-        inputActionsQueue->push(InputAction{FRAMEBUFFER_RESIZE, (float) frameBufferWidth, (float) frameBufferHeight});
+        glViewport(0, 0, width, height);
+        inputActionsQueue->push(InputAction{FRAMEBUFFER_RESIZE, (float) width, (float) height});
         // TODO this is a workaround (window resizing blocks main thread)
         engineSingleton->processMainLoopStep();
     }
@@ -144,12 +141,18 @@ namespace cpptest {
         inputActionsQueue->push(InputAction{POINTER_MOVE, (float) xPos, (float) yPos});
     }
 
-    float Engine::width() const {
-        return frameBufferWidth;
+    glm::vec2 Engine::getWindowDimensions() const {
+        int width;
+        int height;
+        glfwGetWindowSize(window, &width, &height);
+        return glm::vec2{width, height};
     }
 
-    float Engine::height() const {
-        return frameBufferHeight;
+    glm::vec2 Engine::getFramebufferDimensions() const {
+        int width;
+        int height;
+        glfwGetFramebufferSize(window, &width, &height);
+        return glm::vec2{width, height};
     }
 
 }// namespace cpptest

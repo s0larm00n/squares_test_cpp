@@ -6,8 +6,6 @@
 namespace cpptest {
 
     class BoxModel : public Model {
-    private:
-
     public:
         static std::vector<float> boxVertices;
         static std::vector<unsigned int> boxIndices;

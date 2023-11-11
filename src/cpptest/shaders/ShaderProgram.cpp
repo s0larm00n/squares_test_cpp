@@ -2,11 +2,8 @@
 
 namespace cpptest {
 
-    ShaderProgram::ShaderProgram(
-            const std::string &shadersFolderPath,
-            const FramebufferDimensionsProvider *dimensionsProvider
-    )
-        : viewportDimensionsProvider{dimensionsProvider} {
+    ShaderProgram::ShaderProgram(const std::string &shadersFolderPath, const DimensionsProvider *dimensionsProvider)
+        : canvasDimensionsProvider{dimensionsProvider} {
         int success;
         char infoLog[512];
 
@@ -65,13 +62,14 @@ namespace cpptest {
         glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(transform));
     }
 
-    void ShaderProgram::setPlain2DTransformMatrix(float x, float y, float width, float height) const {
-        float ndcX = (2.0f * x) / viewportDimensionsProvider->width() - 1.0f;
-        float ndcY = 1.0f - (2.0f * y) / viewportDimensionsProvider->height();
-        float ndcWidth = (2.0f * width) / viewportDimensionsProvider->width();
-        float ndcHeight = -(2.0f * height) / viewportDimensionsProvider->height();
+    void ShaderProgram::setPlain2DTransformMatrix(float x, float y, float width, float height, float zIndex) const {
+        glm::vec2 framebufferSize = canvasDimensionsProvider->getFramebufferDimensions();
+        float ndcX = (2.0f * x) / framebufferSize.x - 1.0f;
+        float ndcY = 1.0f - (2.0f * y) / framebufferSize.y;
+        float ndcWidth = width / framebufferSize.x;
+        float ndcHeight = height / framebufferSize.y;
         glm::mat4 transform = glm::mat4(1.0f);
-        transform = glm::translate(transform, glm::vec3(ndcX, ndcY, 0.0f));
+        transform = glm::translate(transform, glm::vec3(ndcX, ndcY, zIndex));
         transform = glm::scale(transform, glm::vec3(ndcWidth, ndcHeight, 1.0f));
         setTransformMatrix(transform);
     }

@@ -14,11 +14,19 @@ namespace cpptest {
     private:
         ShaderProgram *shaderProgram;
         BoxModel *boxModel;
+        glm::vec3 location{0, 0, 0};
+        float size = 0;
+        bool isHighlighted = false;
 
     public:
-        Color color{GREEN};
-        SquareController(ShaderProgram *program, BoxModel *model);
+        Color color;
+        SquareController(ShaderProgram *program, BoxModel *model, float x, float y, float sideSize);
         void draw();
+        [[nodiscard]] bool containsPoint(float x, float y) const;
+        void moveBy(float deltaX, float deltaY);
+        void ensureBorders(float framebufferWidth, float framebufferHeight);
+        void switchHighlight(bool value);
+        void setZIndex(float index);
     };
 
 }// namespace cpptest

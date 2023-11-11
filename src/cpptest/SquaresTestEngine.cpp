@@ -2,41 +2,39 @@
 
 namespace cpptest {
 
-    SquaresTestEngine::SquaresTestEngine(std::string name, int width, int height, std::string shadersFolder)
+    SquaresTestEngine::SquaresTestEngine(std::string name, float width, float height, std::string shadersFolder)
         : Engine{std::move(name), width, height, std::move(shadersFolder)} {}
 
     void SquaresTestEngine::init() {
         shaderProgram = new ShaderProgram{shadersFolderPath, this};
-        boxModel = new BoxModel{};
+        squareManager = new SquareManager{shaderProgram};
     }
 
     void SquaresTestEngine::update() {}
 
     void SquaresTestEngine::redraw() {
-        shaderProgram->use();
-        SquareController squareController{shaderProgram, boxModel};
-        squareController.draw();
+        squareManager->draw();
     }
 
-    void SquaresTestEngine::onFramebufferResize(int width, int height) {
-        std::cout << "resize: " << width << ", " << height << std::endl;
+    void SquaresTestEngine::onFramebufferResize(float width, float height) {
+        squareManager->ensureBorders();
     }
 
-    void SquaresTestEngine::onPointerDown(double xPos, double yPos) {
-        std::cout << "down: " << xPos << ", " << yPos << std::endl;
+    void SquaresTestEngine::onPointerDown(float xPos, float yPos) {
+        squareManager->onPointerDown(xPos, yPos);
     }
 
-    void SquaresTestEngine::onPointerMove(double prevX, double prevY, double xPos, double yPos) {
-        std::cout << "move: " << prevX << ", " << prevY << "; "<< xPos << ", " << yPos << std::endl;
+    void SquaresTestEngine::onPointerMove(float prevX, float prevY, float xPos, float yPos) {
+        squareManager->onPointerMove(xPos - prevX, yPos - prevY);
     }
 
     void SquaresTestEngine::onPointerUp() {
-        std::cout << "up";
+        squareManager->onPointerUp();
     }
 
     SquaresTestEngine::~SquaresTestEngine() {
-        delete boxModel;
         delete shaderProgram;
+        delete squareManager;
     }
 
 }// namespace cpptest

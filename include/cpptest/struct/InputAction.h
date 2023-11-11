@@ -7,7 +7,6 @@ namespace cpptest {
         POINTER_UP,
         POINTER_DOWN,
         POINTER_MOVE,
-        WINDOW_RESIZE,
         FRAMEBUFFER_RESIZE
     };
 

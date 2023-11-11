@@ -1,6 +1,8 @@
 #ifndef SQUARES_TEST_CPP_COLOR_H
 #define SQUARES_TEST_CPP_COLOR_H
 
+#include "cpptest/util/Random.h"
+
 namespace cpptest {
 
     struct Color {
@@ -10,6 +12,8 @@ namespace cpptest {
         float alpha;
 
         Color(float r, float g, float b, float a);
+        // Produces random color
+        Color();
     };
 
     inline Color WHITE{1, 1, 1, 1};

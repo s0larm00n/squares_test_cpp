@@ -8,20 +8,22 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include "cpptest/FramebufferDimensionsProvider.h"
+#include "cpptest/DimensionsProvider.h"
 
 namespace cpptest {
 
     class ShaderProgram {
     private:
         unsigned int ID = 0;
-        const FramebufferDimensionsProvider *viewportDimensionsProvider;
+
     public:
-        explicit ShaderProgram(const std::string &shadersFolderPath, const FramebufferDimensionsProvider *dimensionsProvider);
+        const DimensionsProvider *canvasDimensionsProvider;
+
+        explicit ShaderProgram(const std::string &shadersFolderPath, const DimensionsProvider *dimensionsProvider);
         void use() const;
         void setColorAttribute(const Color &color) const;
         void setTransformMatrix(const glm::mat4 &transform) const;
-        void setPlain2DTransformMatrix(float x, float y, float width, float height) const;
+        void setPlain2DTransformMatrix(float x, float y, float width, float height, float zIndex) const;
     };
 
 }// namespace cpptest
